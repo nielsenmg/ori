@@ -1,21 +1,32 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from optparse import OptionParser
+
 import sys
-from collections import OrderedDict
-f = open(sys.argv[1], 'r')
-index = {}
-for line in f:
-    words = line.split(" ")
-    for word in words:
-        word = word.strip().strip('\n').strip(',.?!;:\n').upper()
 
-        if len(word) > 3:
-          if word in index:
-              index[word] = index[word] + 1
-          else:
-              index[word] = 1
+from frequency_counter import FrequencyCounter
 
-orderedDictionary = OrderedDict(sorted(index.items(), key=lambda v: v[1], reverse=True))
-fo = open(sys.argv[2], 'w+')
-for word in orderedDictionary.items():
-  fo.write(str(word[0]) + " " + str(word[1]) + '\n')
+
+def main():
+    parser = OptionParser("usage: %prog [options]")
+    parser.add_option("-f", "--file", action="store", type="string", dest="inputFile", help="Source file")
+    parser.add_option("-o", "--output", action="store", type="string", default="output.txt", dest="outputFile",
+                      help="Output file")
+    (options, args) = parser.parse_args()
+
+    if options.inputFile is None:
+        parser.error("Input file must be informed. \nRun again using option -f or --file to inform the input file.")
+
+    fc = FrequencyCounter()
+    frequences = fc.count_word_frequences(options.inputFile)
+
+    try:
+        output = open(options.outputFile, 'w+')
+        for key, value in frequences.items():
+            output.write("%s %s\n" % (key, value))
+
+    except IOError:
+        sys.stderr.write("Failed to open the file '" + options.outputFile + "' for writting.")
+
+if __name__ == '__main__':
+    main()
