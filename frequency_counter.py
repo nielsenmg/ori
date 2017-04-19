@@ -25,9 +25,9 @@ class FrequencyCounter:
                         self.frequences[word] += 1
                     else:
                         self.frequences[word] = 1
-            return self.sort_frequences()
+            return self.get_frequences()
         except IOError:
             print("The file '" + input_file + "' was not found.")
 
-    def sort_frequences(self, sort_type=DESC):
+    def get_frequences(self, sort_type=DESC):
         return OrderedDict(sorted(self.frequences.items(), key=lambda v: v[1], reverse=sort_type))

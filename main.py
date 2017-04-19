@@ -1,27 +1,33 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 from optparse import OptionParser
 
 import sys
+import sqlite3
+import glob
 
 from frequency_counter import FrequencyCounter
 
-
 def main():
     parser = OptionParser("usage: %prog [options]")
-    parser.add_option("-f", "--file", action="store", type="string", dest="inputFile", help="Source file")
-    parser.add_option("-o", "--output", action="store", type="string", default="output.txt", dest="outputFile",
-                      help="Output file")
+    parser.add_option("-i", "--input", action="store", type="string", default="./input/*txt", dest="inputFolder",
+                      help="Set the input folder")
+    parser.add_option("-o", "--output", action="store", type="string", default="./output/", dest="outputFolder",
+                      help="Set the output folder")
     (options, args) = parser.parse_args()
 
-    if options.inputFile is None:
-        parser.error("Input file must be informed. \nRun again using option -f or --file to inform the input file.")
-
+    conn = sqlite3.connect('frequencies.db')
+    cursor = conn.cursor()
     fc = FrequencyCounter()
-    frequences = fc.count_word_frequences(options.inputFile)
+    files = glob.glob(options.inputFolder)
+    for file in files:
+        fc.count_word_frequences(file)
+
+    frequences = fc.get_frequences()
 
     try:
-        output = open(options.outputFile, 'w+')
+        output = open(options.outputFolder + "output.txt", 'w+')
         for key, value in frequences.items():
             output.write("%s %s\n" % (key, value))
 
