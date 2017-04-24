@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from string import ascii_letters
 from collections import OrderedDict
-import unicodedata
 
 
 class FrequencyCounter:
