@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from string import ascii_letters
 from collections import OrderedDict
-from unicodedata import normalize
+import unicodedata
 
 
 class FrequencyCounter:
@@ -12,7 +13,7 @@ class FrequencyCounter:
 
     @staticmethod
     def normalize_word(word):
-        return ''.join(x for x in normalize('NFKD', word) if x in ascii_letters).lower()
+        return word.strip('\'\"!?,:;. ').lower()
 
     def count_word_frequences(self, input_file):
         try:
