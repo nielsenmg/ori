@@ -1,0 +1,3 @@
+./documents/a.txt
+./documents/b.txt
+./documents/c.txt

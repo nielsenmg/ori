@@ -1,38 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
 from optparse import OptionParser
+from inverted_index import InvertedIndex
 
-import sys
-import glob
-
-from frequency_counter import FrequencyCounter
-from graph import Graph
 
 def main():
     parser = OptionParser("usage: %prog [options]")
-    parser.add_option("-i", "--input", action="store", type="string", default="./input/*txt", dest="inputFolder",
-                      help="Set the input folder")
-    parser.add_option("-o", "--output", action="store", type="string", default="./output/", dest="outputFolder",
-                      help="Set the output folder")
+    parser.add_option("-d", "--documents", action="store", type="string", default="./inputs.txt",
+                      dest="documents_path_file", help="Set the path for the input file with the documents location.")
+    parser.add_option("-o", "--output", action="store", type="string", default="./indice.txt", dest="output_file",
+                      help="Set the path for the output file.")
+    parser.add_option("-s", "--stopwords", action="store", type="string", default="./stopwords.txt",
+                      dest="stopwords_file", help="Set the path of the stopwords file.")
     (options, args) = parser.parse_args()
+    inverted_index = InvertedIndex()
+    inverted_index.generate_index(options.documents_path_file, options.stopwords_file, options.output_file)
 
-    fc = FrequencyCounter()
-    files = glob.glob(options.inputFolder)
-    for file in files:
-        fc.count_word_frequences(file)
-
-    frequences = fc.get_frequences()
-
-    try:
-        output = open(options.outputFolder + "output.txt", 'w+')
-        for key, value in frequences.items():
-            output.write("%s %s\n" % (key, value))
-        output.close()
-    except IOError:
-        sys.stderr.write("Failed to open the file '" + options.outputFile + "' for writting.")
-
-    Graph.draw(options.outputFolder + "output.txt")
 
 if __name__ == '__main__':
     main()
