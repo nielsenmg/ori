@@ -15,7 +15,7 @@ class InvertedIndex:
     def normalize_word(word):
         return word.strip('\'\"#!?,:;. ').lower()
 
-    def generate_index(self, documents_path_file, stopwords_file, output_file):
+    def generate_file(self, documents_path_file, stopwords_file, output_file):
         self.__load_documents_path(documents_path_file)
         self.__load_stop_words(stopwords_file)
 
@@ -29,10 +29,11 @@ class InvertedIndex:
         try:
             file = open(document_file, 'r')
             _, self.current_file = os.path.split(document_file)
-            words = file.read().replace('\n', ' ').split(' ')
+            words = file.read().replace('\n', ' ').replace(',', ' ').replace('.', ' ').replace('!', ' ')\
+                .replace('?', ' ').split(' ')
             for word in words:
                 word = InvertedIndex.normalize_word(word)
-                if word in self.stopwords:
+                if word in self.stopwords or len(word.strip()) == 0:
                     continue
 
                 if word in self.frequencies and self.current_file in self.frequencies[word]:

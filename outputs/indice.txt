@@ -1,5 +1,5 @@
 amor: c.txt,1
-casa: c.txt,1 b.txt,4 a.txt,1
+casa: b.txt,4 c.txt,1 a.txt,1
 casar: c.txt,2
 comigo: c.txt,2
 engracada: a.txt,1
@@ -7,12 +7,11 @@ era: a.txt,1
 faca: c.txt,1
 favor: c.txt,1
 minha: c.txt,1
-mora: c.txt,1 b.txt,1
+mora: b.txt,1 c.txt,1
 muito: a.txt,1
 nada: a.txt,1
 quem: b.txt,2
-quer: c.txt,2 b.txt,2
+quer: b.txt,2 c.txt,2
 tambem: b.txt,1
 teto: a.txt,1
 tinha: a.txt,2
-uma: a.txt,1
