@@ -4,7 +4,7 @@ from optparse import OptionParser
 
 from src.inverted_index import InvertedIndex
 from src.vector_representation import VectorRepresentation
-# from src.query_handler import QueryHandler
+from src.query_handler import QueryHandler
 
 
 def main():
@@ -19,17 +19,19 @@ def main():
                       dest="query_file", help="Set the path of the query file.")
     parser.add_option("-v", "--vector", action="store", type="string", default="./outputs/repdocs.txt",
                       dest="vector_rep", help="Set the path of the vector representation file.")
-    parser.add_option("-a", "--answer", action="store", type="string", default="./outputs/answer.txt",
+    parser.add_option("-a", "--answer", action="store", type="string", default="./outputs/resposta.txt",
                       dest="answer_file", help="Set the path of the answer file.")
     (options, args) = parser.parse_args()
-    inverted_index = InvertedIndex()
-    inverted_index.generate_file(options.docs_path, options.stopwords_file, options.index_path)
+
+    inverted_index = InvertedIndex(options.docs_path, options.stopwords_file)
+    inverted_index.generate_file(options.index_path)
 
     vector_representation = VectorRepresentation(options.docs_path, options.index_path)
     vector_representation.generate_file(options.vector_rep)
 
-    # query_handler = QueryHandler(options.query_file, vector_representation.get_representation())
-    # query_handler.generate_file(options.answer_file)
+    query_handler = QueryHandler(options.query_file, vector_representation.get_representation(),
+                                 vector_representation.get_index_representation())
+    query_handler.generate_file(options.answer_file)
 
 
 if __name__ == '__main__':
